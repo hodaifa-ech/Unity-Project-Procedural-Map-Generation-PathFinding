@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - MapGenerator
+  - MapFloor
+  - Boss
+  - SmallEnemy
+  - MiniBoss
+  - Enemy
+  - SpawnerEnemy
+  - wall
+  - BossHealth
+  - GameOver
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Unwalkable
+  - Water
+  - UI
+  - ground
+  - Bullets
+  - Player
+  - Enemy
+  - Obstacle
+  - EnemyMovementCollider
+  - PlayerMovementCollider
+  - Resource
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: back
+    uniqueID: 3923890173
+    locked: 0
+  - name: empty
+    uniqueID: 2462377429
+    locked: 0
+  - name: front
+    uniqueID: 4020245893
+    locked: 0
+  - name: forground
+    uniqueID: 1493775331
+    locked: 0

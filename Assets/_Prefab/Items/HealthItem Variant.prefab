@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7477249569934526738
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_RootOrder
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281820314042690161, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4136023881049322719, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_Name
+      value: HealthItem Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 4850953183129620950, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4850953183129620950, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_Size.y
+      value: 0.42857143
+      objectReference: {fileID: 0}
+    - target: {fileID: 4850953183129620950, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5e5ea395931c5e24888933a732bb7510, type: 3}
+    - target: {fileID: 4850953183129620950, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4850953183129620950, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1832589867
+      objectReference: {fileID: 0}
+    - target: {fileID: 6885998023122692857, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 909a6adbaacd6a44480dcf215036ce85, type: 3}
+    - target: {fileID: 7069916020403876162, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069916020403876162, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9004288414033340128, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
+      propertyPath: <ResourceData>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: a3609d16ba053fc4b83b4f75a01fec8d, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cb78d52d1d2eef040a5488cc95f3f777, type: 3}
