@@ -28,7 +28,7 @@ This project is a 2D top-down game featuring procedural map generation, as well 
 We welcome contributions from the community. Please fork the repository, make your changes, and submit a pull request for review.
 
 ## Contact
-For any inquiries or support, please contact [LinkedIn](https://www.linkedin.com/in/mohamed-amine-bahassou/).
+For any inquiries or support, please contact [Mohamed Amine Bahassou](https://www.linkedin.com/in/mohamed-amine-bahassou/) or [Hodaifa ECHFFANI](https://www.linkedin.com/in/hodaifa-echffani-297b7b284?miniProfileUrn=urn%3Ali%3Afs_miniProfile%3AACoAAEU6htMBAiIjTH-_vJIaNwi0VV9w_jMQPCQ&lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_all%3BRpSlo2qsSNi%2Bs3WECsKeeg%3D%3D).
 
 ## Authors
 - Bahassou Mohamed Amine
