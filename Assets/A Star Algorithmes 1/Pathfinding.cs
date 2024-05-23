@@ -26,22 +26,146 @@ public class Pathfinding : MonoBehaviour
         if(buttonName == "A*")
         {
             Debug.Log(buttonName);
-            StartCoroutine(FindPath(startPos, targetPos));
+            StartCoroutine(astar(startPos, targetPos));
         }
         if (buttonName == "Dijikstra")
         {
             Debug.Log(buttonName);
             StartCoroutine(Dijkstra(startPos, targetPos));
         }
+        if (buttonName == "BFS")
+        {
+            Debug.Log(buttonName);
+            StartCoroutine(bfs(startPos, targetPos));
+        }
+        if (buttonName == "DFS")
+        {
+            Debug.Log(buttonName);
+            StartCoroutine(dfs(startPos, targetPos));
+        }
+        
         //StartCoroutine(Dijkstra(startPos, targetPos));
 
     }
 
 
 
+ 
+
+    /***************/
+
+    IEnumerator dfs(Vector3 startPos, Vector3 targetPos)
+    {
+        Vector3[] waypoints = new Vector3[0];
+        bool pathSuccess = false;
+
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+
+        if (startNode != null && targetNode != null) // Check if start and target nodes are valid
+        {
+            if (startNode.walkable && targetNode.walkable)
+            {
+                Stack<Node> stack = new Stack<Node>();
+                HashSet<Node> visited = new HashSet<Node>();
+
+                stack.Push(startNode);
+                visited.Add(startNode);
+
+                while (stack.Count > 0)
+                {
+                    Node currentNode = stack.Pop();
+
+                    if (currentNode == targetNode)
+                    {
+                        pathSuccess = true;
+                        break;
+                    }
+
+                    foreach (Node neighbour in grid.GetNeighbours(currentNode))
+                    {
+                        if (!neighbour.walkable || visited.Contains(neighbour))
+                        {
+                            continue;
+                        }
+
+                        visited.Add(neighbour);
+                        neighbour.parent = currentNode;
+                        stack.Push(neighbour);
+                    }
+                }
+            }
+        }
+
+        yield return null;
+
+        if (pathSuccess)
+        {
+            waypoints = RetracePath(startNode, targetNode);
+        }
+
+        requestManager.FinishedProcessingPath(waypoints, pathSuccess);
+    }
 
 
-    IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
+
+    IEnumerator bfs(Vector3 startPos, Vector3 targetPos)
+    {   
+        Vector3[] waypoints = new Vector3[0];
+        bool pathSuccess = false;
+
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+
+        if (startNode != null && targetNode != null) // Check if start and target nodes are valid
+        {
+            if (startNode.walkable && targetNode.walkable)
+            {
+                Queue<Node> queue = new Queue<Node>();
+                HashSet<Node> visited = new HashSet<Node>();
+
+                queue.Enqueue(startNode);
+                visited.Add(startNode);
+
+                while (queue.Count > 0)
+                {
+                    Node currentNode = queue.Dequeue();
+
+                    if (currentNode == targetNode)
+                    {
+                        pathSuccess = true;
+                        break;
+                    }
+
+                    foreach (Node neighbour in grid.GetNeighbours(currentNode))
+                    {
+                        if (!neighbour.walkable || visited.Contains(neighbour))
+                        {
+                            continue;
+                        }
+
+                        visited.Add(neighbour);
+                        neighbour.parent = currentNode;
+                        queue.Enqueue(neighbour);
+                    }
+                }
+            }
+        }
+
+        yield return null;
+
+        if (pathSuccess)
+        {
+            waypoints = RetracePath(startNode, targetNode);
+        }
+
+        requestManager.FinishedProcessingPath(waypoints, pathSuccess);
+    }
+
+
+
+
+    public IEnumerator astar(Vector3 startPos, Vector3 targetPos)
     {
 
         Vector3[] waypoints = new Vector3[0];
@@ -97,8 +221,73 @@ public class Pathfinding : MonoBehaviour
 
     }
 
-    
+    // Update dijkstra 
     IEnumerator Dijkstra(Vector3 startPos, Vector3 targetPos)
+    {
+        Vector3[] waypoints = new Vector3[0];
+        bool pathSuccess = false;
+
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+
+        if (startNode != null && targetNode != null) // Check if start and target nodes are valid
+        {
+            if (startNode.walkable && targetNode.walkable)
+            {
+                Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
+                HashSet<Node> closedSet = new HashSet<Node>();
+
+                openSet.Add(startNode);
+
+                while (openSet.Count > 0)
+                {
+                    Node currentNode = openSet.RemoveFirst();
+                    closedSet.Add(currentNode);
+
+                    if (currentNode == targetNode)
+                    {
+                        pathSuccess = true;
+                        break;
+                    }
+
+                    foreach (Node neighbour in grid.GetNeighbours(currentNode))
+                    {
+                        if (!neighbour.walkable || closedSet.Contains(neighbour))
+                        {
+                            continue;
+                        }
+
+                        int newDistance = currentNode.gCost + GetDistance(currentNode, neighbour);
+
+                        if (newDistance < neighbour.gCost || !openSet.Contains(neighbour))
+                        {
+                            neighbour.gCost = newDistance;
+                            neighbour.parent = currentNode;
+
+                            if (!openSet.Contains(neighbour))
+                                openSet.Add(neighbour);
+                            else
+                                openSet.UpdateItem(neighbour);
+                        }
+                    }
+                }
+            }
+        }
+
+        yield return null;
+
+        if (pathSuccess)
+        {
+            waypoints = RetracePath(startNode, targetNode);
+        }
+
+        requestManager.FinishedProcessingPath(waypoints, pathSuccess);
+    }
+
+
+
+    // old dijkstra 
+    IEnumerator Dijkstra1(Vector3 startPos, Vector3 targetPos)
     {
         Vector3[] waypoints = new Vector3[0];
         bool pathSuccess = false;

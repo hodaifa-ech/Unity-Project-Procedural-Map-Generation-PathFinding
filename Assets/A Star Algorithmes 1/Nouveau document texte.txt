@@ -1,0 +1,43 @@
+IEnumerator void bfs(Vector3 startPos, Vector3 targetPos){
+    	bool pathSuccess = false;
+
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+
+
+            
+    	if(startNode.walkable && targetNode.walkable){
+
+    		List<Node> notVisited = new List<Node>(); // not visited 
+            HashSet<Node> visited = new HashSet<Node>(); // visited 
+            notVisited.Add(startNode);
+
+    		while(notVisited != null){
+
+    			if (currentNode == targetNode)
+                {
+                    pathSuccess = true;
+                    break;
+                }
+
+    			foreach(Node currentNode in notVisited ){
+    				// TODO : effacer currentNode cad notVisited.remove(currentnode) + 3ti current node lxi variable akhor 
+	    			foreach (Node neighbour in grid.GetNeighbours(currentNode)){
+	    				neighbour.parent = grid.GetNeighbours(currentNode) ; 
+	    				visited.Add(grid.GetNeighbours(currentNode));
+	    				notVisited.Add(neighbour);
+	    			}
+    			}
+
+    			// remove the visited node from the list of not visted node 
+    			foreach(Node nodeA in visited){
+    				foreach(Node nodeB in notVisited){
+    					if(nodeA == nodeB){
+    						notVisited.remove(nodeB); // function not exist 
+    					}
+    				}
+    			}
+
+    		}
+    	}
+    }

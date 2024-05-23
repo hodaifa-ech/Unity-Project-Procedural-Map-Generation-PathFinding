@@ -31,7 +31,10 @@ public class BossHealthSlider : MonoBehaviour
             progressSlider.value = progress;
         }
         else
+        {
             progressSlider.value = progress;
+            gameObject.SetActive(false);
+        }
 
     }
 

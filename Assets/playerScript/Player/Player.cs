@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 
 
@@ -43,6 +45,19 @@ public class Player : MonoBehaviour, IAgent, IHittable
     [field: SerializeField]
     public UnityEvent OnGetHit { get; set; }
 
+    public int coin;
+
+    [SerializeField]
+    private UICoin uiCoinPrefab;
+
+
+
+    [SerializeField]
+    private Button ShopAmmo;
+
+
+    [SerializeField]
+    private Button ShopHealth;
 
     private void Awake()
     {
@@ -50,9 +65,14 @@ public class Player : MonoBehaviour, IAgent, IHittable
     }
     private void Start()
     {
+
         currentHealth = maxHealth; // Set current health to initial health
         Health = maxHealth;
         uiHealth.Initialize(Health);
+        coin = 0;
+        ShopAmmo.onClick.AddListener(ammoShop); // Assign the button click event
+        ShopHealth.onClick.AddListener(healhShop); // Assign the button click event
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -79,6 +99,12 @@ public class Player : MonoBehaviour, IAgent, IHittable
                         playeWeapon.AddAmmo(resource.ResourceData.GetAmount());
                         resource.PickUpResource();
                         break;
+                    case ResourceTypeEnum.Coin:
+                        coin += resource.ResourceData.GetAmount();
+                        uiCoinPrefab.UdpateCoin(coin);
+                        resource.PickUpResource();
+                        break;
+
                     default:
                         break;
                 }
@@ -86,6 +112,47 @@ public class Player : MonoBehaviour, IAgent, IHittable
 
         }
     }
+
+
+    
+
+    public void healhShop()
+    {
+        if (Health >= maxHealth)
+        {
+            return;
+        }
+        if(coin >= 30)
+        {
+            Health = maxHealth ;
+            coin -= 30;
+        }
+        else
+        {
+            Debug.Log("You Have Less Coin !");
+        }
+
+    }
+    public void ammoShop()
+    {
+        if (playeWeapon.AmmoFull)
+        {
+            return;
+        }
+        if (coin >= 20)
+        {
+            playeWeapon.FullAmmo(100);
+            coin -= 20;
+        }
+        else
+        {
+            Debug.Log("You Have Less Coin !");
+        }
+    }
+
+
+
+
     public void GetHit(int damage, GameObject damageDealer)
     {
         if (!dead)

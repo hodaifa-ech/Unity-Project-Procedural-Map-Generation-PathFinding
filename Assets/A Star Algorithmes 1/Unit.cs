@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Unit : MonoBehaviour {
 
-
 	public Transform target;
 	float speed = 5;
 	Vector3[] path;

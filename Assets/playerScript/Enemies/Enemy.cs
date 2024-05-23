@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using UnityEngine.UI;
 public class Enemy : MonoBehaviour, IHittable, IAgent, IKnockBack
 {
 
@@ -28,9 +28,16 @@ public class Enemy : MonoBehaviour, IHittable, IAgent, IKnockBack
 
     [field: SerializeField]
     public UnityEvent OnDie { get; set; }
+    [SerializeField]
+    private UILevel uilevel;
 
+    public Player PlayerCoin; // player pour collecter les coins 
+    public Button level;
+
+    private bool upgradeActivated = false;
     private void Awake()
     {
+        PlayerCoin = FindObjectOfType<Player>();
         if (enemyAttack == null)
         {
             enemyAttack = GetComponent<EnemyAttack>();
@@ -40,14 +47,39 @@ public class Enemy : MonoBehaviour, IHittable, IAgent, IKnockBack
 
     private void Start()
     {
-        //Health = EnemyData.MaxHealth;
+        level.onClick.AddListener(UpgradeButtonClick);
 
     }
-     public void GetHit(int damage, GameObject damageDealer)
+    private void UpgradeButtonClick()
     {
-        if(dead == false)
+        if (PlayerCoin.coin >= 250)
         {
-            Health -= damage; 
+            upgradeActivated = true;
+            uilevel.Udpatelevel(2);
+
+        }
+        else if (PlayerCoin.coin >= 1000)
+        {
+            upgradeActivated = true;
+            uilevel.Udpatelevel(4);
+
+        }
+
+    }
+    public void GetHit(int damage, GameObject damageDealer)
+    {
+        if (dead == false)
+        {
+            if (PlayerCoin.coin >= 250 && damage < 2 && upgradeActivated)
+            {
+                damage = damage * 2;
+            }
+
+            else if (PlayerCoin.coin >= 1000 && damage < 4 && upgradeActivated)
+            {
+                damage = damage * 2;
+            }
+            Health -= damage;
             OnGetHit?.Invoke();
             if (Health <= 0)
             {
@@ -59,14 +91,18 @@ public class Enemy : MonoBehaviour, IHittable, IAgent, IKnockBack
     }
     public void Die()
     {
-       
+
+
+        if (MiniBoss.isDead == false || GameObject.FindWithTag("Boss") == false)
+        {
+            Kills++;
+        }
         Destroy(gameObject);
-        Kills++;
 
     }
     public void PerformAttack()
     {
-        if (dead==false)
+        if (dead == false)
         {
             enemyAttack.Attack(EnemyData.Damage);
         }

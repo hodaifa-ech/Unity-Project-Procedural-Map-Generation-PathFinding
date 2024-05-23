@@ -6,6 +6,11 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 public class Tailmapvisualizer : MonoBehaviour
 {
+    public float detectRadius;
+    public Tilemap[] tilemaps; // Set this to an array of all the Tilemaps you want to detect tiles on
+
+
+    /**/
     public List<GameObject> instantiatedItems = new List<GameObject>();
 
     public List<GameObject> items; //here 
@@ -21,7 +26,39 @@ public class Tailmapvisualizer : MonoBehaviour
         wallInnerCornnerDownLeft,wallInnerCornnerDownRight,wallDiagonalCornnerDownRight,
         wallDiagonalCornnerDownLeft, wallDiagonalCornnerUpRight, wallDiagonalCornnerUpLeft;
 
-  
+
+
+
+    
+
+
+
+    // detect tile by position 
+    public bool DetectedTilesAtPosition(Vector3 position)
+    {
+        foreach (Tilemap tilemap in tilemaps)
+        {
+            int radiusInCells = Mathf.CeilToInt(detectRadius / tilemap.cellSize.x);
+            Vector3Int centerCellPosition = tilemap.WorldToCell(position);
+            BoundsInt bounds = new BoundsInt(centerCellPosition - new Vector3Int(radiusInCells, radiusInCells, 0),
+                                             new Vector3Int(radiusInCells * 2 + 1, radiusInCells * 2 + 1, 1));
+            TileBase[] tiles = tilemap.GetTilesBlock(bounds);
+
+            foreach (TileBase tile in tiles)
+            {
+                if (tile != null)
+                {
+                    // Tile was found at position bounds
+                    return true;
+                }
+            }
+        }
+        // No conflicting tiles found
+        return false;
+    }
+
+
+
     // ana zedtha 
     // destroy items bax mayb9awx yduplicaw 
     public void DestroyAllItems()
@@ -67,33 +104,47 @@ public class Tailmapvisualizer : MonoBehaviour
             {
                 int randIndex = UnityEngine.Random.Range(0, items.Count);
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject item = Instantiate(items[randIndex]);
-                item.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, -1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(item);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, -1, 0)) == true)
+                {
+                    GameObject item = Instantiate(items[randIndex]);
+                    item.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, -1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(item);
+                }
+                
             }
             else if (tile == wallSideRight && rand == 2)
             {
                 int randIndex = UnityEngine.Random.Range(0, items.Count);
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject item = Instantiate(items[randIndex]);
-                item.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 0, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(item);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 0, 0)) == true)
+                {
+                    GameObject item = Instantiate(items[randIndex]);
+                    item.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 0, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(item);
+                }
+
             }
             else if (tile == wallSideLeft && rand == 3)
             {
                 int randIndex = UnityEngine.Random.Range(0, items.Count);
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject item = Instantiate(items[randIndex]);
-                item.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 0, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(item);
+                if(DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 0, 0)) == true)
+                {
+                    GameObject item = Instantiate(items[randIndex]);
+                    item.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 0, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(item);
+                }
             }
             else if (tile == wallBottom && rand == 4)
             {
                 int randIndex = UnityEngine.Random.Range(0, items.Count);
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject item = Instantiate(items[randIndex]);
-                item.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, 1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(item);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, 1, 0)) == true)
+                {
+                    GameObject item = Instantiate(items[randIndex]);
+                    item.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, 1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(item);
+                }
             }
             
         }
@@ -105,30 +156,43 @@ public class Tailmapvisualizer : MonoBehaviour
             if (tile == wallTop && rand == 1)
             {
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject spawnerobj = Instantiate(Spawner);
-                spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, -1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(spawnerobj);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, -1, 0)) == true)
+                {
+                    GameObject spawnerobj = Instantiate(Spawner);
+                    spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, -1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(spawnerobj);
+                }
+
             }
             else if(tile == wallSideRight && rand == 2)
             {
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject spawnerobj = Instantiate(Spawner);
-                spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 0, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(spawnerobj);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 0, 0)) == true)
+                {
+                    GameObject spawnerobj = Instantiate(Spawner);
+                    spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 0, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(spawnerobj);
+                }
             }
             else if (tile == wallSideLeft && rand == 3)
             {
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject spawnerobj = Instantiate(Spawner);
-                spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 0, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(spawnerobj);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 0, 0)) == true)
+                {
+                    GameObject spawnerobj = Instantiate(Spawner);
+                    spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 0, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(spawnerobj);
+                }
             }
             else if (tile == wallBottom && rand == 4)
             {
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject spawnerobj = Instantiate(Spawner);
-                spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, 1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(spawnerobj);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, 1, 0)) == true)
+                {
+                    GameObject spawnerobj = Instantiate(Spawner);
+                    spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(0, 1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(spawnerobj);
+                }
             }
         }
 
@@ -181,16 +245,23 @@ public class Tailmapvisualizer : MonoBehaviour
             if (tile == wallInnerCornnerDownLeft && rand == 1)
             {
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject spawnerobj = Instantiate(Spawner);
-                spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(spawnerobj);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 1, 0)) == true)
+                {
+                    GameObject spawnerobj = Instantiate(Spawner);
+                    spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(1, 1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(spawnerobj);
+                }
+
             }
             else if (tile == wallInnerCornnerDownRight && rand == 2)
             {
                 var tileposition = wallTilemap.WorldToCell((Vector3Int)pos);
-                GameObject spawnerobj = Instantiate(Spawner);
-                spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
-                instantiatedItems.Add(spawnerobj);
+                if (DetectedTilesAtPosition(wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 1, 0)) == true)
+                {
+                    GameObject spawnerobj = Instantiate(Spawner);
+                    spawnerobj.transform.position = wallTilemap.GetCellCenterWorld(tileposition) + new Vector3Int(-1, 1, 0); // get the center of tile and +x = 1 bax t7at flimn 7daha 
+                    instantiatedItems.Add(spawnerobj);
+                }
             }
         }
 

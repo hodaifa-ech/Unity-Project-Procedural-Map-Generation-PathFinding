@@ -7,17 +7,18 @@ using UnityEngine.SceneManagement;
 
 public class VictoryPanel : MonoBehaviour
 {
+    public GameObject Boss; 
     public GameObject VictoryPanelGameObject;
     private bool Paused = false;
     private List<Enemy> enemy = new List<Enemy>(); // Initialize the list here
 
     private void Update()
     {
-        if (!GameObject.FindWithTag("Boss") && !Paused) // Corrected the condition here
-            Pause();
+        if (!Boss && !Paused) // Corrected the condition here
+            Victory();
     }
 
-    private void Pause()
+    private void Victory()
     {
         // Pause 
 

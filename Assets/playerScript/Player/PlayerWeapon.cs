@@ -18,6 +18,15 @@ public class PlayerWeapon : AgentWeapon
 
     }
 
+    
+    public void FullAmmo(int FullAmount)
+    {
+        if (weapon != null)
+        {
+            weapon.Ammo = FullAmount;
+        }
+    }
+
     public void AddAmmo(int amount)
     {
         if (weapon != null)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 using static UnityEditor.PlayerSettings;
 
@@ -12,26 +13,31 @@ public class CorridorFirstDundeonGenerator : SimpleRandomWalkDungeonGenrator
     public static List<Vector2Int> roomspos;
 
     [SerializeField]
-    private int corridorLength = 14, corridorCount = 5;
+    public static int corridorLength = 25, corridorCount = 25;
     [SerializeField]
     [Range(0.1f, 1)]
-    private float roomPercent = 0.8f;
+    public static float roomPercent = 1f;
     [SerializeField]
     private GameObject player;
     [SerializeField]
     private GameObject boss;
     [SerializeField]
     private GameObject enemies;
+    [SerializeField]
+    private GameObject Coin;
 
     public List<GameObject> instantiatedEnemies = new List<GameObject>();
 
-
-
-
+    // ghi db ghantestiw mn ba3d nzido script raso
+    private Tailmapvisualizer tailmapvisualizer;
+    public Tilemap[] tilemaps;
+    public float detectRadius;
+    public static List<GameObject> instantiatedCoins = new List<GameObject>();
 
 
     public void Start()
     {
+
     }
 
 
@@ -215,15 +221,19 @@ public class CorridorFirstDundeonGenerator : SimpleRandomWalkDungeonGenrator
                 {
 
                     player.transform.position = index;
+                    Coin.transform.position = position;
 
                 }
+
             }
+
         }
 
         //spawner other room (except player room )
         foreach (Vector2Int room in roomsToCreate)
         {
             int rand = UnityEngine.Random.Range(0, 4);
+
             if ((int)(player.transform.position.magnitude) != (int)room.magnitude)
             {
                 GameObject enemy = Instantiate(enemies);
@@ -231,6 +241,20 @@ public class CorridorFirstDundeonGenerator : SimpleRandomWalkDungeonGenrator
                 enemy.transform.position = room + new Vector2(rand, rand);
 
                 instantiatedEnemies.Add(enemy);
+                //Coin generation
+                int numOfCoins = UnityEngine.Random.Range(10, 20); // Randomly choose number of coins
+                for (int i = 0; i < numOfCoins; i++)
+                {
+                    Vector2 randomPositionCoin = GetRandomPositionInsideRoom(room); // Get random position inside the room
+                    if (!DetectedTilesAtPosition(randomPositionCoin))
+                    {
+                        GameObject Coinobj = Instantiate(Coin);
+                        Coinobj.transform.position = randomPositionCoin;
+                        instantiatedEnemies.Add(Coinobj);
+                        instantiatedCoins.Add(Coinobj);
+                    }
+                }
+
 
             }
         }
@@ -253,7 +277,19 @@ public class CorridorFirstDundeonGenerator : SimpleRandomWalkDungeonGenrator
 
         return roomPositions;
     }
+    private Vector2 GetRandomPositionInsideRoom(Vector2Int roomPosition)
+    {
+        // Define the boundaries of the room
+        Vector2 roomCenter = new Vector2(roomPosition.x + 0.5f, roomPosition.y + 0.5f);
+        float roomWidth = 8f; // Adjust as per your room size
+        float roomHeight = 8f; // Adjust as per your room size
 
+        // Calculate random position inside the room
+        float randomX = UnityEngine.Random.Range(roomCenter.x - roomWidth / 2f, roomCenter.x + roomWidth / 2f);
+        float randomY = UnityEngine.Random.Range(roomCenter.y - roomHeight / 2f, roomCenter.y + roomHeight / 2f);
+
+        return new Vector2(randomX, randomY);
+    }
     private List<List<Vector2Int>> CreateCorridors(HashSet<Vector2Int> floorPositions, HashSet<Vector2Int> potentialRoomPositions)
     {
         var currentPosition = startPosition;
@@ -270,4 +306,28 @@ public class CorridorFirstDundeonGenerator : SimpleRandomWalkDungeonGenrator
 
         return corridors;
     }
+    //detected wall
+    public bool DetectedTilesAtPosition(Vector3 position)
+    {
+        foreach (Tilemap tilemap in tilemaps)
+        {
+            int radiusInCells = Mathf.CeilToInt(detectRadius / tilemap.cellSize.x);
+            Vector3Int centerCellPosition = tilemap.WorldToCell(position);
+            BoundsInt bounds = new BoundsInt(centerCellPosition - new Vector3Int(radiusInCells, radiusInCells, 0),
+                                             new Vector3Int(radiusInCells * 2 + 1, radiusInCells * 2 + 1, 1));
+            TileBase[] tiles = tilemap.GetTilesBlock(bounds);
+
+            foreach (TileBase tile in tiles)
+            {
+                if (tile != null)
+                {
+                    // Tile was found at position bounds
+                    return true;
+                }
+            }
+        }
+        // No conflicting tiles found
+        return false;
+    }
+
 }

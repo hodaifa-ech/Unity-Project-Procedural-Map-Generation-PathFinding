@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
+
 public class Weapon : MonoBehaviour
 {
     [SerializeField]
@@ -21,10 +24,12 @@ public class Weapon : MonoBehaviour
             OnAmmoChange?.Invoke(ammo);
         }
     }
-
+    public Player coin;
     public bool AmmoFull { get => Ammo >= weaponData.AmmoCapacity; }
 
     protected bool isShooting = false;
+    [SerializeField]
+    private UILevel uilevel;
 
     [SerializeField]
     protected bool reloadCoroutine = false;
@@ -36,13 +41,29 @@ public class Weapon : MonoBehaviour
     public UnityEvent OnShootNoAmmo { get; set; }
     [field: SerializeField]
     public UnityEvent<int> OnAmmoChange { get; set; }
+    public Button level;
+
+    private bool upgradeActivated = false; // Flag to check if upgrade is activated
 
     private void Start()
     {
         Ammo = weaponData.AmmoCapacity;
+        level.onClick.AddListener(UpgradeButtonClick); // Assign the button click event
     }
 
-   
+
+
+
+
+    private void UpgradeButtonClick()
+    {
+        if (coin.coin >= 200)
+        {
+            upgradeActivated = true;
+            uilevel.Udpatelevel(2);
+        }
+    }
+
     public void TryShooting()
     {
         Debug.Log("Shooting");
@@ -103,14 +124,23 @@ public class Weapon : MonoBehaviour
         reloadCoroutine = false;
     }
 
-    private void ShootBullet()
+    public void ShootBullet()
     {
         SpawnBullet(muzzle.transform.position, CalculateAngle(muzzle));
     }
 
-    private void SpawnBullet(Vector3 position, Quaternion rotation)
+    public void SpawnBullet(Vector3 position, Quaternion rotation)
     {
         var bulletPrefab = Instantiate(weaponData.BulletData.bulletPrefab, position, rotation);
+        if (upgradeActivated)
+        {
+            Renderer bulletRenderer = bulletPrefab.GetComponent<Renderer>();
+            if (bulletRenderer != null)
+            {
+                bulletRenderer.material.color = Color.HSVToRGB(0.58f, 0.7f, 1f); // Change color to blue
+            }
+        }
+
         bulletPrefab.GetComponent<Bullet>().BulletData = weaponData.BulletData;
     }
 

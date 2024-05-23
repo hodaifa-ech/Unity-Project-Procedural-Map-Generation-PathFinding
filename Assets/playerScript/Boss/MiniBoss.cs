@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MiniBoss : MonoBehaviour
 {
 
+
+    // Panel de Transition au Grand Boss 
+    public GameObject VictoryPanel;
+    public static bool isDead = false; 
+
     public Enemy MiniBossObject;
-    private bool trans = false;
     private GameObject player;
 
     public int healthIncreaseRate = 1;
@@ -31,7 +37,7 @@ public class MiniBoss : MonoBehaviour
         GameObject obj = GameObject.FindWithTag("MiniBoss");
         MiniBossObject = obj.GetComponent<Enemy>();
         healthTmp = MiniBossObject.Health;
-
+        VictoryPanel.SetActive(false);
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -44,10 +50,6 @@ public class MiniBoss : MonoBehaviour
         {
             healthTmp = MiniBossObject.Health;
             transform.position = player.transform.position;
-        }
-        if(MiniBossObject.Health <= 5)
-        {
-            rb.velocity = rb.velocity * 2f; 
         }
 
         timeSinceLastIncrease += Time.deltaTime;
@@ -62,11 +64,67 @@ public class MiniBoss : MonoBehaviour
             timeSinceLastIncrease = 0.0f;
 
         }
+        //if (!GameObject.FindGameObjectWithTag("MiniBoss") && !isDead) // Corrected the condition here
+        //    Dead();
 
+        
 
 
     }
 
+    private void Dead()
+    {
+        isDead = true; 
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] spawner = GameObject.FindGameObjectsWithTag("SpawnerEnemy");
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy != null)
+            {
+                Enemy e = enemy.GetComponent<Enemy>();
+                e.dead = true;
+                e.OnDie?.Invoke();
+
+            }
+        }
+
+        foreach (GameObject spawn in spawner)
+        {
+            if (spawn != null)
+            {
+                DestroyImmediate(spawn);
+            }
+        }
+
+
+        // Freeze all Rigidbody components in the scene
+        Rigidbody[] rigidbodies = FindObjectsOfType<Rigidbody>();
+        foreach (var rb in rigidbodies)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
+
+        // Pause the player Inputs 
+        GameObject varGameObject = GameObject.FindWithTag("Player");
+        varGameObject.GetComponent<AgentInput>().enabled = false;
+
+        // Display the panel of the Victory 
+        VictoryPanel.SetActive(true); 
+    }
+
+
+   /*
+    private void OnDestroy()
+    {
+        try
+        {
+            Dead();
+        }
+        catch { Debug.Log("error De Exception ! "); }
+    }
+   */
 
 
 

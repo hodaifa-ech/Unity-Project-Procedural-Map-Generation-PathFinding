@@ -1,58 +1,133 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class game : MonoBehaviour
+public class Game : MonoBehaviour
 {
 
-    public GameObject menu;
-    private bool isMenuVisible = false;
+    
 
+    //*****
 
-    private Vector3 startScale; 
+    public List<GameObject> menus;
+    public List<KeyCode> keys;
+    private List<bool> menuVisibilities;
+    private Vector3 startScale;
+    private Coroutine currentCoroutine;
 
     private void Start()
     {
-        startScale = menu.transform.localScale; 
+        
+
+        //*** 
+        menuVisibilities = new List<bool>(new bool[menus.Count]);
+        foreach (var menu in menus)
+        {
+            menu.SetActive(false);
+        }
+        if (menus.Count > 0)
+        {
+            startScale = menus[0].transform.localScale;
+        }
     }
 
+   
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isMenuVisible = !isMenuVisible;
 
-            StartCoroutine(showCard()); 
-        }
-
-    }
-
-    public IEnumerator showCard()
-    {
-        // Toggle menu visibility
         
-        float elapsedTime = 0f;
-        while (elapsedTime < 0.1f)
-        {
-            if(isMenuVisible)
-            {
-                menu.SetActive(isMenuVisible);
-                elapsedTime += Time.deltaTime;
-                Vector3 LerpedScale = Vector3.Lerp(menu.transform.localScale, startScale + new Vector3(startScale.x+0.3f, startScale.y+0.4f,0), (elapsedTime / 0.1f));
-                menu.transform.localScale = LerpedScale;
-                yield return null;
 
-            }
-            else
+
+        //*****
+        for (int i = 0; i < keys.Count; i++)
+        {
+            if (Input.GetKeyDown(keys[i]))
             {
-                menu.SetActive(isMenuVisible);
-                menu.transform.localScale = startScale;
-                yield return null;
+                ToggleMenu(i);
+                break; // Only allow one menu toggle per frame
+            }
+        }
+    }
+    public void Resume(int index) { ToggleMenu(index); } // for resume btn 
+    private void ToggleMenu(int index)
+    {
+        // Check if any menu is currently visible
+        if (IsAnyMenuVisible() && !menuVisibilities[index])
+        {
+            return; // If another menu is open and the current one is not the same, do nothing
+        }
+
+        // Toggle the visibility of the selected menu
+        menuVisibilities[index] = !menuVisibilities[index];
+
+        // Hide all other menus
+        for (int i = 0; i < menus.Count; i++)
+        {
+            if (i != index)
+            {
+                menuVisibilities[i] = false;
             }
         }
 
+        // Update the time scale based on the selected menu's visibility
+        Time.timeScale = menuVisibilities[index] ? 0f : 1f;
+
+        // Stop any currently running coroutine
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+
+        // Start the coroutine for the selected menu
+        currentCoroutine = StartCoroutine(ShowCard(menus[index], menuVisibilities[index]));
+
+        // Hide other menus immediately
+        for (int i = 0; i < menus.Count; i++)
+        {
+            if (i != index)
+            {
+                menus[i].SetActive(false);
+            }
+        }
     }
 
+    private bool IsAnyMenuVisible()
+    {
+        foreach (bool visibility in menuVisibilities)
+        {
+            if (visibility)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private IEnumerator ShowCard(GameObject menu, bool show)
+    {
+        float elapsedTime = 0f;
+        float duration = 0.1f;
+
+        Vector3 targetScale = show ? startScale + new Vector3(1f, 1f, 0) : startScale;
+
+        if (show)
+        {
+            menu.SetActive(true);
+        }
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            menu.transform.localScale = Vector3.Lerp(menu.transform.localScale, targetScale, elapsedTime / duration);
+            yield return null;
+        }
+
+        menu.transform.localScale = targetScale;
+
+        if (!show)
+        {
+            menu.SetActive(false);
+        }
+    }
 }

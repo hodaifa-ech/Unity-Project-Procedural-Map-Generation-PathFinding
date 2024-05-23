@@ -10,7 +10,7 @@ public class Grid : MonoBehaviour
     public LayerMask unwalkableMask;
     private Vector2 gridWorldSize; // bdltha 
     public float nodeRadius;
-    Node[,] grid;
+    public Node[,] grid;
 
     
     public TilemapRenderer spriteRenderer;
