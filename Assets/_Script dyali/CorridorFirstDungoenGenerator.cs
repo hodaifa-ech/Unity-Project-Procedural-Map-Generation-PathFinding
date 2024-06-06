@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
+//using static UnityEditor.PlayerSettings;
 
 public class CorridorFirstDundeonGenerator : SimpleRandomWalkDungeonGenrator
 {
@@ -25,6 +25,11 @@ public class CorridorFirstDundeonGenerator : SimpleRandomWalkDungeonGenrator
     private GameObject enemies;
     [SerializeField]
     private GameObject Coin;
+
+    [SerializeField]
+    [Range(0, 100)]
+    public int numOfCoins = 20;
+
 
     public List<GameObject> instantiatedEnemies = new List<GameObject>();
 
@@ -242,7 +247,12 @@ public class CorridorFirstDundeonGenerator : SimpleRandomWalkDungeonGenrator
 
                 instantiatedEnemies.Add(enemy);
                 //Coin generation
-                int numOfCoins = UnityEngine.Random.Range(10, 20); // Randomly choose number of coins
+
+                if(numOfCoins != 0)
+                {
+                    numOfCoins = UnityEngine.Random.Range(10, 20); // Randomly choose number of coins
+
+                }
                 for (int i = 0; i < numOfCoins; i++)
                 {
                     Vector2 randomPositionCoin = GetRandomPositionInsideRoom(room); // Get random position inside the room

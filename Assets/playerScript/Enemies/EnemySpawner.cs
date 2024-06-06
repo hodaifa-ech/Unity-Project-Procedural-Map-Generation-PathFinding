@@ -127,7 +127,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
-
+    /*
     protected void OnDrawGizmos()
     {
         if (UnityEditor.Selection.activeObject == gameObject)
@@ -137,4 +137,5 @@ public class EnemySpawner : MonoBehaviour
             Gizmos.color = Color.white;
         }
     }
+    */
 }

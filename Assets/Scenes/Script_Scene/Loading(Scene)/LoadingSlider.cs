@@ -41,4 +41,8 @@ public class LoadingSlider : MonoBehaviour
         }
         //progressSlider.value = 1;
     }
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }

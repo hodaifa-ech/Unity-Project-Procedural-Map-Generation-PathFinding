@@ -4383,6 +4383,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 564986902}
   m_CullTransparentMesh: 1
+--- !u!1 &571786660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 571786661}
+  - component: {fileID: 571786662}
+  m_Layer: 5
+  m_Name: SpawnMiniBoss
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &571786661
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571786660}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1860819139}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &571786662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571786660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61612e9596db2c84c90854dbb808cd5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MiniBoss: {fileID: 927351014}
+  MiniBossHealth: {fileID: 1344676375}
+  nbrKills: 100
 --- !u!1 &584569171
 GameObject:
   m_ObjectHideFlags: 0
@@ -5357,6 +5408,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6984728451241256001, guid: 8c041d2579ce13b4198931906d438616, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: fab31ac31e3a63a4ba69587d19eec021, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6959,6 +7014,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6676360799818203491, guid: 8c041d2579ce13b4198931906d438616, type: 3}
   m_PrefabInstance: {fileID: 656217341}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &927351015 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6386400956849257613, guid: 8c041d2579ce13b4198931906d438616, type: 3}
+  m_PrefabInstance: {fileID: 656217341}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 927351014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76865151f552f24bbfc9bd4c5354049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &939032167
 GameObject:
   m_ObjectHideFlags: 0
@@ -23786,7 +23852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressSlider: {fileID: 995676001}
-  Boss: {fileID: 0}
+  Boss: {fileID: 927351015}
 --- !u!1 &1360660040
 GameObject:
   m_ObjectHideFlags: 0
@@ -24667,6 +24733,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 998107881}
+  - {fileID: 1711228024}
   m_Father: {fileID: 1532174343}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -25699,13 +25766,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1711228023}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 770819512}
-  m_Father: {fileID: 1860819139}
+  m_Father: {fileID: 1500836502}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -26035,10 +26102,10 @@ RectTransform:
   - {fileID: 1323216537}
   - {fileID: 2011405432}
   - {fileID: 1532174343}
-  - {fileID: 1711228024}
   - {fileID: 118015720}
   - {fileID: 490104883}
   - {fileID: 77540018}
+  - {fileID: 571786661}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

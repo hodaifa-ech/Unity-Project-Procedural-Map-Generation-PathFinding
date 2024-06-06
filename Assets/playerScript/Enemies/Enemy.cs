@@ -47,7 +47,11 @@ public class Enemy : MonoBehaviour, IHittable, IAgent, IKnockBack
 
     private void Start()
     {
-        level.onClick.AddListener(UpgradeButtonClick);
+        try
+        {
+            level.onClick.AddListener(UpgradeButtonClick);
+        }
+        catch { }
 
     }
     private void UpgradeButtonClick()

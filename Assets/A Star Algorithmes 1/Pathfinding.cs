@@ -199,11 +199,11 @@ public class Pathfinding : MonoBehaviour
                         continue;
                     }
 
-                    int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+                    int newMovementCostToNeighbour = currentNode.gCost + HGetDistance(currentNode, neighbour);
                     if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                     {
                         neighbour.gCost = newMovementCostToNeighbour;
-                        neighbour.hCost = GetDistance(neighbour, targetNode);
+                        neighbour.hCost = HGetDistance(neighbour, targetNode);
                         neighbour.parent = currentNode;
 
                         if (!openSet.Contains(neighbour))
@@ -376,6 +376,17 @@ public class Pathfinding : MonoBehaviour
 
         return waypoints.ToArray();
     }
+    // heuristics for A* algorithm
+    int HGetDistance(Node nodeA, Node nodeB)
+    {
+        int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
+        int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
+
+        if (dstX > dstY)
+            return 14 * dstY + 10 * (dstX - dstY);
+        return 14 * dstX + 10 * (dstY - dstX);
+    }
+
 
     int GetDistance(Node nodeA, Node nodeB)
     {
